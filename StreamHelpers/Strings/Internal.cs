@@ -54,6 +54,13 @@ namespace Gibbed.IO
             stream.Write(data, 0, data.Length);
         }
 
+        internal static void WriteStringInternalStatic(this Stream stream, Encoding encoding, string value, uint size)
+        {
+            byte[] data = encoding.GetBytes(value);
+            Array.Resize(ref data, (int)size);
+            stream.Write(data, 0, (int)size);
+        }
+
         internal static string ReadStringInternalDynamic(this Stream stream, Encoding encoding, char end)
         {
             int characterSize = encoding.GetByteCount("e");

@@ -49,6 +49,11 @@ namespace Gibbed.IO
             stream.WriteStringInternalStatic(DefaultEncoding, value);
         }
 
+        public static void WriteString(this Stream stream, string value, uint size)
+        {
+            stream.WriteStringInternalStatic(DefaultEncoding, value, size);
+        }
+
         public static void WriteStringZ(this Stream stream, string value)
         {
             stream.WriteStringInternalDynamic(DefaultEncoding, value, '\0');
