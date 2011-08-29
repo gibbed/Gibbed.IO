@@ -51,28 +51,12 @@ namespace Gibbed.IO
             return (Int32)swapped;
         }
 
-        public static Int32 Swap24(this Int32 value)
-        {
-            Int32 swapped = ((0x000000FF) & (value >> 16) |
-                              (0x0000FF00) & (value) |
-                              (0x00FF0000) & (value << 16));
-            return swapped;
-        }
-
         public static UInt32 Swap(this UInt32 value)
         {
             UInt32 swapped = ((0x000000FF) & (value >> 24) |
                               (0x0000FF00) & (value >> 8) |
                               (0x00FF0000) & (value << 8) |
                               (0xFF000000) & (value << 24));
-            return swapped;
-        }
-
-        public static UInt32 Swap24(this UInt32 value)
-        {
-            UInt32 swapped = ((0x000000FF) & (value >> 16) |
-                              (0x0000FF00) & (value) |
-                              (0x00FF0000) & (value << 16));
             return swapped;
         }
 
@@ -101,6 +85,14 @@ namespace Gibbed.IO
                               (0x00FF000000000000) & (value << 40) |
                               (0xFF00000000000000) & (value << 56));
             return swapped;
+        }
+
+        public static Single Swap(this Single value)
+        {
+            // lol
+            var data = BitConverter.GetBytes(value);
+            var rawValue = BitConverter.ToInt32(data, 0).Swap();
+            return BitConverter.ToSingle(BitConverter.GetBytes(rawValue), 0);
         }
     }
 }
