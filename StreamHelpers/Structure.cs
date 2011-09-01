@@ -39,7 +39,7 @@ namespace Gibbed.IO
 
             if (stream.Read(buffer, 0, structureSize) != structureSize)
             {
-                throw new InvalidOperationException("could not read all of data for structure");
+                throw new EndOfStreamException("could not read all of data for structure");
             }
 
             handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
@@ -63,7 +63,7 @@ namespace Gibbed.IO
 
             if (stream.Read(buffer, 0, size) != size)
             {
-                throw new InvalidOperationException("could not read all of data for structure");
+                throw new EndOfStreamException("could not read all of data for structure");
             }
 
             handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
