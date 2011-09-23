@@ -43,14 +43,17 @@ namespace Gibbed.IO
 
         public static MemoryStream ReadToMemoryStream(this Stream stream, long size, int buffer)
         {
-            MemoryStream memory = new MemoryStream();
+            var memory = new MemoryStream();
 
             long left = size;
             byte[] data = new byte[buffer];
             while (left > 0)
             {
                 int block = (int)(Math.Min(left, data.Length));
-                stream.Read(data, 0, block);
+                if (stream.Read(data, 0, block) != block)
+                {
+                    throw new EndOfStreamException();
+                }
                 memory.Write(data, 0, block);
                 left -= block;
             }
@@ -71,7 +74,10 @@ namespace Gibbed.IO
             while (left > 0)
             {
                 int block = (int)(Math.Min(left, data.Length));
-                input.Read(data, 0, block);
+                if (input.Read(data, 0, block) != block)
+                {
+                    throw new EndOfStreamException();
+                }
                 stream.Write(data, 0, block);
                 left -= block;
             }
