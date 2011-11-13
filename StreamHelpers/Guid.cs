@@ -21,39 +21,52 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Gibbed.IO
 {
     public static partial class StreamHelpers
     {
+        public static Guid ReadValueGuid(this Stream stream, Endian endian)
+        {
+            var a = stream.ReadValueS32(endian);
+            var b = stream.ReadValueS16(endian);
+            var c = stream.ReadValueS16(endian);
+            var d = stream.ReadBytes(8);
+            return new Guid(a, b, c, d);
+        }
+
+        [Obsolete]
         public static Guid ReadValueGuid(this Stream stream, bool littleEndian)
         {
-            Int32 a = stream.ReadValueS32(littleEndian);
-            Int16 b = stream.ReadValueS16(littleEndian);
-            Int16 c = stream.ReadValueS16(littleEndian);
-            byte[] d = new byte[8];
-            stream.Read(d, 0, d.Length);
-            return new Guid(a, b, c, d);
+            return stream.ReadValueGuid(littleEndian == true ? Endian.Little : Endian.Big);
         }
 
         public static Guid ReadValueGuid(this Stream stream)
         {
-            return stream.ReadValueGuid(true);
+            return stream.ReadValueGuid(Endian.Little);
         }
 
+        public static void WriteValueGuid(this Stream stream, Guid value, Endian endian)
+        {
+            var data = value.ToByteArray();
+            Debug.Assert(data.Length == 16);
+            stream.WriteValueS32(BitConverter.ToInt32(data, 0), endian);
+            stream.WriteValueS16(BitConverter.ToInt16(data, 4), endian);
+            stream.WriteValueS16(BitConverter.ToInt16(data, 6), endian);
+            stream.Write(data, 8, 8);
+        }
+
+        [Obsolete]
         public static void WriteValueGuid(this Stream stream, Guid value, bool littleEndian)
         {
-            byte[] data = value.ToByteArray();
-            stream.WriteValueS32(BitConverter.ToInt32(data, 0), littleEndian);
-            stream.WriteValueS16(BitConverter.ToInt16(data, 4), littleEndian);
-            stream.WriteValueS16(BitConverter.ToInt16(data, 6), littleEndian);
-            stream.Write(data, 8, 8);
+            stream.WriteValueGuid(value, littleEndian == true ? Endian.Little : Endian.Big);
         }
 
         public static void WriteValueGuid(this Stream stream, Guid value)
         {
-            stream.WriteValueGuid(value, true);
+            stream.WriteValueGuid(value, Endian.Little);
         }
     }
 }

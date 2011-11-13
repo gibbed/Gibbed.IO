@@ -27,18 +27,15 @@ namespace Gibbed.IO
 {
     public static partial class StreamHelpers
     {
-        internal static bool ShouldSwap(bool littleEndian)
+        internal static bool ShouldSwap(Endian endian)
         {
-            if (littleEndian == true && BitConverter.IsLittleEndian == false)
+            switch (endian)
             {
-                return true;
-            }
-            else if (littleEndian == false && BitConverter.IsLittleEndian == true)
-            {
-                return true;
+                case Endian.Little: return BitConverter.IsLittleEndian == false;
+                case Endian.Big: return BitConverter.IsLittleEndian == true;
             }
 
-            return false;
+            throw new NotSupportedException();
         }
 
         public static MemoryStream ReadToMemoryStream(this Stream stream, long size, int buffer)
@@ -64,7 +61,7 @@ namespace Gibbed.IO
 
         public static MemoryStream ReadToMemoryStream(this Stream stream, long size)
         {
-            return stream.ReadToMemoryStream(size, 0x4000);
+            return stream.ReadToMemoryStream(size, 0x40000);
         }
 
         public static void WriteFromStream(this Stream stream, Stream input, long size, int buffer)
@@ -85,7 +82,29 @@ namespace Gibbed.IO
 
         public static void WriteFromStream(this Stream stream, Stream input, long size)
         {
-            stream.WriteFromStream(input, size, 0x4000);
+            stream.WriteFromStream(input, size, 0x40000);
+        }
+
+        public static byte[] ReadBytes(this Stream stream, int length)
+        {
+            if (length < 0)
+            {
+                throw new ArgumentOutOfRangeException("length");
+            }
+
+            var data = new byte[length];
+            var read = stream.Read(data, 0, length);
+            if (read != length)
+            {
+                throw new EndOfStreamException();
+            }
+
+            return data;
+        }
+
+        public static void WriteBytes(this Stream stream, byte[] data)
+        {
+            stream.Write(data, 0, data.Length);
         }
     }
 }

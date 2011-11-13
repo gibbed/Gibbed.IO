@@ -21,108 +21,119 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Gibbed.IO
 {
     public static partial class StreamHelpers
     {
-        // This could most certainly be done better but fuck it for now.
+        private enum EnumUnderlyingType
+        {
+            Unknown,
+            S8, U8,
+            S16, U16,
+            S32, U32,
+            S64, U64,
+        }
 
+        private static class EnumTypeCache
+        {
+            private static Dictionary<Type, EnumUnderlyingType> Lookup = null;
+
+            static EnumTypeCache()
+            {
+                Lookup = new Dictionary<Type, EnumUnderlyingType>();
+            }
+
+            private static EnumUnderlyingType TranslateType(Type type)
+            {
+                if (type.IsEnum == true)
+                {
+                    var underlyingType = Enum.GetUnderlyingType(type);
+
+                    if (underlyingType == typeof(sbyte)) return EnumUnderlyingType.S8;
+                    else if (underlyingType == typeof(byte)) return EnumUnderlyingType.U8;
+                    else if (underlyingType == typeof(short)) return EnumUnderlyingType.S16;
+                    else if (underlyingType == typeof(ushort)) return EnumUnderlyingType.U16;
+                    else if (underlyingType == typeof(int)) return EnumUnderlyingType.S32;
+                    else if (underlyingType == typeof(uint)) return EnumUnderlyingType.U32;
+                    else if (underlyingType == typeof(long)) return EnumUnderlyingType.S64;
+                    else if (underlyingType == typeof(ulong)) return EnumUnderlyingType.U64;
+                }
+                
+                return EnumUnderlyingType.Unknown;
+            }
+
+            public static EnumUnderlyingType Get(Type type)
+            {
+                /*if (Lookup.ContainsKey(type) == true)
+                {
+                    return Lookup[type];
+                }*/
+
+                return /*Lookup[type] =*/ TranslateType(type);
+            }
+        }
+
+        public static T ReadValueEnum<T>(this Stream stream, Endian endian)
+        {
+            var type = typeof(T);
+
+            object value;
+            switch (EnumTypeCache.Get(type))
+            {
+                case EnumUnderlyingType.S8: value = stream.ReadValueS8(); break;
+                case EnumUnderlyingType.U8: value = stream.ReadValueU8(); break;
+                case EnumUnderlyingType.S16: value = stream.ReadValueS16(); break;
+                case EnumUnderlyingType.U16: value = stream.ReadValueU16(); break;
+                case EnumUnderlyingType.S32: value = stream.ReadValueS32(); break;
+                case EnumUnderlyingType.U32: value = stream.ReadValueU32(); break;
+                case EnumUnderlyingType.S64: value = stream.ReadValueS64(); break;
+                case EnumUnderlyingType.U64: value = stream.ReadValueU64(); break;
+                default: throw new NotSupportedException();
+            }
+
+            return (T)Enum.ToObject(type, value);
+        }
+
+        [Obsolete]
         public static T ReadValueEnum<T>(this Stream stream, bool littleEndian)
         {
-            Type enumType = typeof(T);
-            if (enumType.IsEnum == false)
-            {
-                throw new InvalidOperationException("not an enum");
-            }
-
-            Type underlyingType = Enum.GetUnderlyingType(enumType);
-            if (underlyingType.IsPrimitive == false)
-            {
-                throw new InvalidOperationException("enum is not primitive");
-            }
-
-            if (underlyingType == typeof(byte))
-            {
-                return (T)Enum.ToObject(enumType, stream.ReadValueU8());
-            }
-            else if (underlyingType == typeof(sbyte))
-            {
-                return (T)Enum.ToObject(enumType, stream.ReadValueS8());
-            }
-            else if (underlyingType == typeof(Int16))
-            {
-                return (T)Enum.ToObject(enumType, stream.ReadValueS16(littleEndian));
-            }
-            else if (underlyingType == typeof(UInt16))
-            {
-                return (T)Enum.ToObject(enumType, stream.ReadValueU16(littleEndian));
-            }
-            else if (underlyingType == typeof(Int32))
-            {
-                return (T)Enum.ToObject(enumType, stream.ReadValueS32(littleEndian));
-            }
-            else if (underlyingType == typeof(UInt32))
-            {
-                return (T)Enum.ToObject(enumType, stream.ReadValueU32(littleEndian));
-            }
-
-            throw new InvalidOperationException("unhandled enum primitive type");
+            return stream.ReadValueEnum<T>(littleEndian == true ? Endian.Little : Endian.Big);
         }
 
         public static T ReadValueEnum<T>(this Stream stream)
         {
-            return stream.ReadValueEnum<T>(true);
+            return stream.ReadValueEnum<T>(Endian.Little);
         }
 
+        public static void WriteValueEnum<T>(this Stream stream, object value, Endian endian)
+        {
+            var type = typeof(T);
+            switch (EnumTypeCache.Get(type))
+            {
+                case EnumUnderlyingType.S8: stream.WriteValueS8((sbyte)value); break;
+                case EnumUnderlyingType.U8: stream.WriteValueU8((byte)value); break;
+                case EnumUnderlyingType.S16: stream.WriteValueS16((short)value); break;
+                case EnumUnderlyingType.U16: stream.WriteValueU16((ushort)value); break;
+                case EnumUnderlyingType.S32: stream.WriteValueS32((int)value); break;
+                case EnumUnderlyingType.U32: stream.WriteValueU32((uint)value); break;
+                case EnumUnderlyingType.S64: stream.WriteValueS64((long)value); break;
+                case EnumUnderlyingType.U64: stream.WriteValueU64((ulong)value); break;
+                default: throw new NotSupportedException();
+            }
+        }
+
+        [Obsolete]
         public static void WriteValueEnum<T>(this Stream stream, object value, bool littleEndian)
         {
-            Type enumType = typeof(T);
-            if (enumType.IsEnum == false)
-            {
-                throw new InvalidOperationException("not an enum");
-            }
-
-            Type underlyingType = Enum.GetUnderlyingType(enumType);
-            if (underlyingType.IsPrimitive == false)
-            {
-                throw new InvalidOperationException("enum is not primitive");
-            }
-
-            if (underlyingType == typeof(byte))
-            {
-                stream.WriteValueU8((byte)value);
-            }
-            else if (underlyingType == typeof(sbyte))
-            {
-                stream.WriteValueS8((sbyte)value);
-            }
-            else if (underlyingType == typeof(Int16))
-            {
-                stream.WriteValueS16((Int16)value, littleEndian);
-            }
-            else if (underlyingType == typeof(UInt16))
-            {
-                stream.WriteValueU16((UInt16)value, littleEndian);
-            }
-            else if (underlyingType == typeof(Int32))
-            {
-                stream.WriteValueS32((Int32)value, littleEndian);
-            }
-            else if (underlyingType == typeof(UInt32))
-            {
-                stream.WriteValueU32((UInt32)value, littleEndian);
-            }
-            else
-            {
-                throw new InvalidOperationException("unhandled enum primitive type");
-            }
+            stream.WriteValueEnum<T>(value, littleEndian == true ? Endian.Little : Endian.Big);
         }
 
         public static void WriteValueEnum<T>(this Stream stream, object value)
         {
-            stream.WriteValueEnum<T>(value, true);
+            stream.WriteValueEnum<T>(value, Endian.Little);
         }
     }
 }

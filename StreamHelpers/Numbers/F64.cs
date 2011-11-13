@@ -30,16 +30,20 @@ namespace Gibbed.IO
     {
         public static Double ReadValueF64(this Stream stream)
         {
-            return stream.ReadValueF64(true);
+            return stream.ReadValueF64(Endian.Little);
         }
 
+        [Obsolete]
         public static Double ReadValueF64(this Stream stream, bool littleEndian)
         {
-            byte[] data = new byte[8];
-            int read = stream.Read(data, 0, 8);
-            Debug.Assert(read == 8);
+            return stream.ReadValueF64(littleEndian == true ? Endian.Little : Endian.Big);
+        }
 
-            if (ShouldSwap(littleEndian))
+        public static Double ReadValueF64(this Stream stream, Endian endian)
+        {
+            var data = stream.ReadBytes(8);
+
+            if (ShouldSwap(endian))
             {
                 return BitConverter.Int64BitsToDouble(BitConverter.ToInt64(data, 0).Swap());
             }
@@ -51,13 +55,19 @@ namespace Gibbed.IO
 
         public static void WriteValueF64(this Stream stream, Double value)
         {
-            stream.WriteValueF64(value, true);
+            stream.WriteValueF64(value, Endian.Little);
         }
 
+        [Obsolete]
         public static void WriteValueF64(this Stream stream, Double value, bool littleEndian)
         {
+            stream.WriteValueF64(value, littleEndian == true ? Endian.Little : Endian.Big);
+        }
+
+        public static void WriteValueF64(this Stream stream, Double value, Endian endian)
+        {
             byte[] data;
-            if (ShouldSwap(littleEndian))
+            if (ShouldSwap(endian))
             {
                 data = BitConverter.GetBytes(BitConverter.DoubleToInt64Bits(value).Swap());
             }
@@ -66,7 +76,7 @@ namespace Gibbed.IO
                 data = BitConverter.GetBytes(value);
             }
             Debug.Assert(data.Length == 8);
-            stream.Write(data, 0, 8);
+            stream.WriteBytes(data);
         }
     }
 }

@@ -30,17 +30,21 @@ namespace Gibbed.IO
     {
         public static Int16 ReadValueS16(this Stream stream)
         {
-            return stream.ReadValueS16(true);
+            return stream.ReadValueS16(Endian.Little);
         }
 
+        [Obsolete]
         public static Int16 ReadValueS16(this Stream stream, bool littleEndian)
         {
-            byte[] data = new byte[2];
-            int read = stream.Read(data, 0, 2);
-            Debug.Assert(read == 2);
-            Int16 value = BitConverter.ToInt16(data, 0);
+            return stream.ReadValueS16(littleEndian == true ? Endian.Little : Endian.Big);
+        }
 
-            if (ShouldSwap(littleEndian))
+        public static Int16 ReadValueS16(this Stream stream, Endian endian)
+        {
+            var data = stream.ReadBytes(2);
+            var value = BitConverter.ToInt16(data, 0);
+
+            if (ShouldSwap(endian))
             {
                 value = value.Swap();
             }
@@ -50,19 +54,25 @@ namespace Gibbed.IO
 
         public static void WriteValueS16(this Stream stream, Int16 value)
         {
-            stream.WriteValueS16(value, true);
+            stream.WriteValueS16(value, Endian.Little);
         }
 
+        [Obsolete]
         public static void WriteValueS16(this Stream stream, Int16 value, bool littleEndian)
         {
-            if (ShouldSwap(littleEndian))
+            stream.WriteValueS16(value, littleEndian == true ? Endian.Little : Endian.Big);
+        }
+
+        public static void WriteValueS16(this Stream stream, Int16 value, Endian endian)
+        {
+            if (ShouldSwap(endian))
             {
                 value = value.Swap();
             }
 
-            byte[] data = BitConverter.GetBytes(value);
+            var data = BitConverter.GetBytes(value);
             Debug.Assert(data.Length == 2);
-            stream.Write(data, 0, 2);
+            stream.WriteBytes(data);
         }
     }
 }
