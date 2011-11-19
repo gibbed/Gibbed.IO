@@ -102,6 +102,11 @@ namespace Gibbed.IO
             return data;
         }
 
+        public static byte[] ReadBytes(this Stream stream, uint length)
+        {
+            return stream.ReadBytes((int)length);
+        }
+
         public static void WriteBytes(this Stream stream, byte[] data)
         {
             stream.Write(data, 0, data.Length);
