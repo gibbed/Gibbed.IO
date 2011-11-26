@@ -85,12 +85,12 @@ namespace Gibbed.IO
             {
                 case EnumUnderlyingType.S8: value = stream.ReadValueS8(); break;
                 case EnumUnderlyingType.U8: value = stream.ReadValueU8(); break;
-                case EnumUnderlyingType.S16: value = stream.ReadValueS16(); break;
-                case EnumUnderlyingType.U16: value = stream.ReadValueU16(); break;
-                case EnumUnderlyingType.S32: value = stream.ReadValueS32(); break;
-                case EnumUnderlyingType.U32: value = stream.ReadValueU32(); break;
-                case EnumUnderlyingType.S64: value = stream.ReadValueS64(); break;
-                case EnumUnderlyingType.U64: value = stream.ReadValueU64(); break;
+                case EnumUnderlyingType.S16: value = stream.ReadValueS16(endian); break;
+                case EnumUnderlyingType.U16: value = stream.ReadValueU16(endian); break;
+                case EnumUnderlyingType.S32: value = stream.ReadValueS32(endian); break;
+                case EnumUnderlyingType.U32: value = stream.ReadValueU32(endian); break;
+                case EnumUnderlyingType.S64: value = stream.ReadValueS64(endian); break;
+                case EnumUnderlyingType.U64: value = stream.ReadValueU64(endian); break;
                 default: throw new NotSupportedException();
             }
 
@@ -115,12 +115,12 @@ namespace Gibbed.IO
             {
                 case EnumUnderlyingType.S8: stream.WriteValueS8((sbyte)value); break;
                 case EnumUnderlyingType.U8: stream.WriteValueU8((byte)value); break;
-                case EnumUnderlyingType.S16: stream.WriteValueS16((short)value); break;
-                case EnumUnderlyingType.U16: stream.WriteValueU16((ushort)value); break;
-                case EnumUnderlyingType.S32: stream.WriteValueS32((int)value); break;
-                case EnumUnderlyingType.U32: stream.WriteValueU32((uint)value); break;
-                case EnumUnderlyingType.S64: stream.WriteValueS64((long)value); break;
-                case EnumUnderlyingType.U64: stream.WriteValueU64((ulong)value); break;
+                case EnumUnderlyingType.S16: stream.WriteValueS16((short)value, endian); break;
+                case EnumUnderlyingType.U16: stream.WriteValueU16((ushort)value, endian); break;
+                case EnumUnderlyingType.S32: stream.WriteValueS32((int)value, endian); break;
+                case EnumUnderlyingType.U32: stream.WriteValueU32((uint)value, endian); break;
+                case EnumUnderlyingType.S64: stream.WriteValueS64((long)value, endian); break;
+                case EnumUnderlyingType.U64: stream.WriteValueU64((ulong)value, endian); break;
                 default: throw new NotSupportedException();
             }
         }
