@@ -46,14 +46,24 @@ namespace Gibbed.IO
             stream.WriteValueU8((byte)(value == true ? 1 : 0));
         }
 
-        public static bool ReadValueB32(this Stream stream)
+        public static bool ReadValueB32(this Stream stream, Endian endian)
         {
             return ((stream.ReadValueU32() & 1) == 1) ? true : false;
         }
 
-        public static void WriteValueB32(this Stream stream, bool value)
+        public static bool ReadValueB32(this Stream stream)
+        {
+            return stream.ReadValueB32(Endian.Little);
+        }
+
+        public static void WriteValueB32(this Stream stream, bool value, Endian endian)
         {
             stream.WriteValueU32((byte)(value == true ? 1 : 0));
+        }
+
+        public static void WriteValueB32(this Stream stream, bool value)
+        {
+            stream.WriteValueB32(value, Endian.Little);
         }
     }
 }

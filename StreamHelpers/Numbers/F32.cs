@@ -21,6 +21,7 @@
  */
 
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 
@@ -28,15 +29,10 @@ namespace Gibbed.IO
 {
     public static partial class StreamHelpers
     {
+        #region ReadValueF32
         public static Single ReadValueF32(this Stream stream)
         {
             return stream.ReadValueF32(Endian.Little);
-        }
-
-        [Obsolete]
-        public static Single ReadValueF32(this Stream stream, bool littleEndian)
-        {
-            return stream.ReadValueF32(littleEndian == true ? Endian.Little : Endian.Big);
         }
 
         public static Single ReadValueF32(this Stream stream, Endian endian)
@@ -52,16 +48,11 @@ namespace Gibbed.IO
                 return BitConverter.ToSingle(data, 0);
             }
         }
-
+        #endregion
+        #region WriteValueF32
         public static void WriteValueF32(this Stream stream, Single value)
         {
             stream.WriteValueF32(value, Endian.Little);
-        }
-
-        [Obsolete]
-        public static void WriteValueF32(this Stream stream, Single value, bool littleEndian)
-        {
-            stream.WriteValueF32(value, littleEndian == true ? Endian.Little : Endian.Big);
         }
 
         public static void WriteValueF32(this Stream stream, Single value, Endian endian)
@@ -78,5 +69,21 @@ namespace Gibbed.IO
             Debug.Assert(data.Length == 4);
             stream.WriteBytes(data);
         }
+        #endregion
+        #region Obsolete
+        [Obsolete("use Endian enum instead of boolean to represent endianness")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Single ReadValueF32(this Stream stream, bool littleEndian)
+        {
+            return stream.ReadValueF32(littleEndian == true ? Endian.Little : Endian.Big);
+        }
+
+        [Obsolete("use Endian enum instead of boolean to represent endianness")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static void WriteValueF32(this Stream stream, Single value, bool littleEndian)
+        {
+            stream.WriteValueF32(value, littleEndian == true ? Endian.Little : Endian.Big);
+        }
+        #endregion
     }
 }

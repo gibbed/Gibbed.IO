@@ -21,6 +21,7 @@
  */
 
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 
@@ -28,6 +29,7 @@ namespace Gibbed.IO
 {
     public static partial class StreamHelpers
     {
+        #region ReadValueGuid
         public static Guid ReadValueGuid(this Stream stream, Endian endian)
         {
             var a = stream.ReadValueS32(endian);
@@ -37,17 +39,12 @@ namespace Gibbed.IO
             return new Guid(a, b, c, d);
         }
 
-        [Obsolete]
-        public static Guid ReadValueGuid(this Stream stream, bool littleEndian)
-        {
-            return stream.ReadValueGuid(littleEndian == true ? Endian.Little : Endian.Big);
-        }
-
         public static Guid ReadValueGuid(this Stream stream)
         {
             return stream.ReadValueGuid(Endian.Little);
         }
-
+        #endregion
+        #region WriteValueGuid
         public static void WriteValueGuid(this Stream stream, Guid value, Endian endian)
         {
             var data = value.ToByteArray();
@@ -58,15 +55,24 @@ namespace Gibbed.IO
             stream.Write(data, 8, 8);
         }
 
-        [Obsolete]
-        public static void WriteValueGuid(this Stream stream, Guid value, bool littleEndian)
-        {
-            stream.WriteValueGuid(value, littleEndian == true ? Endian.Little : Endian.Big);
-        }
-
         public static void WriteValueGuid(this Stream stream, Guid value)
         {
             stream.WriteValueGuid(value, Endian.Little);
         }
+        #endregion
+        #region Obsolete
+        [Obsolete("use Endian enum instead of boolean to represent endianness")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Guid ReadValueGuid(this Stream stream, bool littleEndian)
+        {
+            return stream.ReadValueGuid(littleEndian == true ? Endian.Little : Endian.Big);
+        }
+
+        [Obsolete("use Endian enum instead of boolean to represent endianness")]
+        public static void WriteValueGuid(this Stream stream, Guid value, bool littleEndian)
+        {
+            stream.WriteValueGuid(value, littleEndian == true ? Endian.Little : Endian.Big);
+        }
+        #endregion
     }
 }

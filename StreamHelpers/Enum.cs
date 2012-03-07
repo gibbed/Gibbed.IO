@@ -22,12 +22,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 
 namespace Gibbed.IO
 {
     public static partial class StreamHelpers
     {
+        #region Cache
         private enum EnumUnderlyingType
         {
             Unknown,
@@ -75,7 +77,8 @@ namespace Gibbed.IO
                 return /*Lookup[type] =*/ TranslateType(type);
             }
         }
-
+        #endregion
+        #region ReadValueEnum
         public static T ReadValueEnum<T>(this Stream stream, Endian endian)
         {
             var type = typeof(T);
@@ -97,17 +100,12 @@ namespace Gibbed.IO
             return (T)Enum.ToObject(type, value);
         }
 
-        [Obsolete]
-        public static T ReadValueEnum<T>(this Stream stream, bool littleEndian)
-        {
-            return stream.ReadValueEnum<T>(littleEndian == true ? Endian.Little : Endian.Big);
-        }
-
         public static T ReadValueEnum<T>(this Stream stream)
         {
             return stream.ReadValueEnum<T>(Endian.Little);
         }
-
+        #endregion
+        #region WriteValueEnum
         public static void WriteValueEnum<T>(this Stream stream, object value, Endian endian)
         {
             var type = typeof(T);
@@ -125,15 +123,25 @@ namespace Gibbed.IO
             }
         }
 
-        [Obsolete]
-        public static void WriteValueEnum<T>(this Stream stream, object value, bool littleEndian)
-        {
-            stream.WriteValueEnum<T>(value, littleEndian == true ? Endian.Little : Endian.Big);
-        }
-
         public static void WriteValueEnum<T>(this Stream stream, object value)
         {
             stream.WriteValueEnum<T>(value, Endian.Little);
         }
+        #endregion
+        #region Obsolete
+        [Obsolete("use Endian enum instead of boolean to represent endianness")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static T ReadValueEnum<T>(this Stream stream, bool littleEndian)
+        {
+            return stream.ReadValueEnum<T>(littleEndian == true ? Endian.Little : Endian.Big);
+        }
+
+        [Obsolete("use Endian enum instead of boolean to represent endianness")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static void WriteValueEnum<T>(this Stream stream, object value, bool littleEndian)
+        {
+            stream.WriteValueEnum<T>(value, littleEndian == true ? Endian.Little : Endian.Big);
+        }
+        #endregion
     }
 }

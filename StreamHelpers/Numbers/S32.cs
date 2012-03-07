@@ -21,6 +21,7 @@
  */
 
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 
@@ -28,15 +29,10 @@ namespace Gibbed.IO
 {
     public static partial class StreamHelpers
     {
+        #region ReadValueS32
         public static Int32 ReadValueS32(this Stream stream)
         {
             return stream.ReadValueS32(Endian.Little);
-        }
-
-        [Obsolete]
-        public static Int32 ReadValueS32(this Stream stream, bool littleEndian)
-        {
-            return stream.ReadValueS32(littleEndian == true ? Endian.Little : Endian.Big);
         }
 
         public static Int32 ReadValueS32(this Stream stream, Endian endian)
@@ -51,15 +47,11 @@ namespace Gibbed.IO
 
             return value;
         }
-
+        #endregion
+        #region WriteValueS32
         public static void WriteValueS32(this Stream stream, Int32 value)
         {
             stream.WriteValueS32(value, Endian.Little);
-        }
-
-        public static void WriteValueS32(this Stream stream, Int32 value, bool littleEndian)
-        {
-            stream.WriteValueS32(value, littleEndian == true ? Endian.Little : Endian.Big);
         }
 
         public static void WriteValueS32(this Stream stream, Int32 value, Endian endian)
@@ -73,5 +65,22 @@ namespace Gibbed.IO
             Debug.Assert(data.Length == 4);
             stream.WriteBytes(data);
         }
+        #endregion
+        #region Obsolete
+
+        [Obsolete("use Endian enum instead of boolean to represent endianness")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Int32 ReadValueS32(this Stream stream, bool littleEndian)
+        {
+            return stream.ReadValueS32(littleEndian == true ? Endian.Little : Endian.Big);
+        }
+
+        [Obsolete("use Endian enum instead of boolean to represent endianness")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static void WriteValueS32(this Stream stream, Int32 value, bool littleEndian)
+        {
+            stream.WriteValueS32(value, littleEndian == true ? Endian.Little : Endian.Big);
+        }
+        #endregion
     }
 }

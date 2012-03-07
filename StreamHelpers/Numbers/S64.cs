@@ -21,6 +21,7 @@
  */
 
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 
@@ -28,15 +29,10 @@ namespace Gibbed.IO
 {
     public static partial class StreamHelpers
     {
+        #region ReadValueS64
         public static Int64 ReadValueS64(this Stream stream)
         {
             return stream.ReadValueS64(Endian.Little);
-        }
-
-        [Obsolete]
-        public static Int64 ReadValueS64(this Stream stream, bool littleEndian)
-        {
-            return stream.ReadValueS64(littleEndian == true ? Endian.Little : Endian.Big);
         }
 
         public static Int64 ReadValueS64(this Stream stream, Endian endian)
@@ -51,16 +47,11 @@ namespace Gibbed.IO
 
             return value;
         }
-
+        #endregion
+        #region WriteValueS64
         public static void WriteValueS64(this Stream stream, Int64 value)
         {
             stream.WriteValueS64(value, Endian.Little);
-        }
-
-        [Obsolete]
-        public static void WriteValueS64(this Stream stream, Int64 value, bool littleEndian)
-        {
-            stream.WriteValueS64(value, littleEndian == true ? Endian.Little : Endian.Big);
         }
 
         public static void WriteValueS64(this Stream stream, Int64 value, Endian endian)
@@ -74,5 +65,21 @@ namespace Gibbed.IO
             Debug.Assert(data.Length == 8);
             stream.WriteBytes(data);
         }
+        #endregion
+        #region Obsolete
+        [Obsolete("use Endian enum instead of boolean to represent endianness")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Int64 ReadValueS64(this Stream stream, bool littleEndian)
+        {
+            return stream.ReadValueS64(littleEndian == true ? Endian.Little : Endian.Big);
+        }
+
+        [Obsolete("use Endian enum instead of boolean to represent endianness")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static void WriteValueS64(this Stream stream, Int64 value, bool littleEndian)
+        {
+            stream.WriteValueS64(value, littleEndian == true ? Endian.Little : Endian.Big);
+        }
+        #endregion
     }
 }
