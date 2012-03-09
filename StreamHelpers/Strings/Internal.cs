@@ -22,6 +22,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Text;
 
@@ -31,7 +32,7 @@ namespace Gibbed.IO
     {
         internal static string ReadStringInternalStatic(this Stream stream, Encoding encoding, uint size, bool trailingNull)
         {
-            byte[] data = new byte[size];
+            var data = new byte[size];
             stream.Read(data, 0, data.Length);
 
             string value = encoding.GetString(data, 0, data.Length);
@@ -65,10 +66,10 @@ namespace Gibbed.IO
         {
             int characterSize = encoding.GetByteCount("e");
             Debug.Assert(characterSize == 1 || characterSize == 2 || characterSize == 4);
-            string characterEnd = end.ToString();
+            string characterEnd = end.ToString(CultureInfo.InvariantCulture);
 
             int i = 0;
-            byte[] data = new byte[128 * characterSize];
+            var data = new byte[128 * characterSize];
 
             while (true)
             {
@@ -98,12 +99,10 @@ namespace Gibbed.IO
 
         internal static void WriteStringInternalDynamic(this Stream stream, Encoding encoding, string value, char end)
         {
-            byte[] data;
-
-            data = encoding.GetBytes(value);
+            byte[] data = encoding.GetBytes(value);
             stream.Write(data, 0, data.Length);
 
-            data = encoding.GetBytes(end.ToString());
+            data = encoding.GetBytes(end.ToString(CultureInfo.InvariantCulture));
             stream.Write(data, 0, data.Length);
         }
     }

@@ -58,7 +58,7 @@ namespace Gibbed.IO
             // this is a dumbfuck way to do this but it'll work for now
             if (skip > 0)
             {
-                byte[] junk = new byte[align - skip];
+                var junk = new byte[align - skip];
                 stream.Write(junk, 0, align - skip);
             }
         }

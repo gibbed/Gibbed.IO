@@ -38,7 +38,7 @@ namespace Gibbed.IO
 
         public static bool ReadValueB8(this Stream stream)
         {
-            return stream.ReadValueU8() > 0 ? true : false;
+            return stream.ReadValueU8() > 0;
         }
 
         public static void WriteValueB8(this Stream stream, bool value)
@@ -48,7 +48,7 @@ namespace Gibbed.IO
 
         public static bool ReadValueB32(this Stream stream, Endian endian)
         {
-            return ((stream.ReadValueU32() & 1) == 1) ? true : false;
+            return stream.ReadValueU32(endian) != 0;
         }
 
         public static bool ReadValueB32(this Stream stream)

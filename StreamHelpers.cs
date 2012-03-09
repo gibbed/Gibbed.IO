@@ -33,9 +33,8 @@ namespace Gibbed.IO
             {
                 case Endian.Little: return BitConverter.IsLittleEndian == false;
                 case Endian.Big: return BitConverter.IsLittleEndian == true;
+                default: throw ArgumentException("unsupported endianness", "endian");
             }
-
-            throw new NotSupportedException();
         }
 
         public static MemoryStream ReadToMemoryStream(this Stream stream, long size, int buffer)
@@ -43,10 +42,10 @@ namespace Gibbed.IO
             var memory = new MemoryStream();
 
             long left = size;
-            byte[] data = new byte[buffer];
+            var data = new byte[buffer];
             while (left > 0)
             {
-                int block = (int)(Math.Min(left, data.Length));
+                var block = (int)(Math.Min(left, data.Length));
                 if (stream.Read(data, 0, block) != block)
                 {
                     throw new EndOfStreamException();
@@ -67,10 +66,10 @@ namespace Gibbed.IO
         public static void WriteFromStream(this Stream stream, Stream input, long size, int buffer)
         {
             long left = size;
-            byte[] data = new byte[buffer];
+            var data = new byte[buffer];
             while (left > 0)
             {
-                int block = (int)(Math.Min(left, data.Length));
+                var block = (int)(Math.Min(left, data.Length));
                 if (input.Read(data, 0, block) != block)
                 {
                     throw new EndOfStreamException();

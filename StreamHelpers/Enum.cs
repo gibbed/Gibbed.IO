@@ -21,7 +21,7 @@
  */
 
 using System;
-using System.Collections.Generic;
+//using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 
@@ -41,12 +41,12 @@ namespace Gibbed.IO
 
         private static class EnumTypeCache
         {
-            private static Dictionary<Type, EnumUnderlyingType> Lookup = null;
+            /*private static Dictionary<Type, EnumUnderlyingType> _Lookup;
 
             static EnumTypeCache()
             {
-                Lookup = new Dictionary<Type, EnumUnderlyingType>();
-            }
+                _Lookup = new Dictionary<Type, EnumUnderlyingType>();
+            }*/
 
             private static EnumUnderlyingType TranslateType(Type type)
             {
@@ -55,13 +55,13 @@ namespace Gibbed.IO
                     var underlyingType = Enum.GetUnderlyingType(type);
 
                     if (underlyingType == typeof(sbyte)) return EnumUnderlyingType.S8;
-                    else if (underlyingType == typeof(byte)) return EnumUnderlyingType.U8;
-                    else if (underlyingType == typeof(short)) return EnumUnderlyingType.S16;
-                    else if (underlyingType == typeof(ushort)) return EnumUnderlyingType.U16;
-                    else if (underlyingType == typeof(int)) return EnumUnderlyingType.S32;
-                    else if (underlyingType == typeof(uint)) return EnumUnderlyingType.U32;
-                    else if (underlyingType == typeof(long)) return EnumUnderlyingType.S64;
-                    else if (underlyingType == typeof(ulong)) return EnumUnderlyingType.U64;
+                    if (underlyingType == typeof(byte)) return EnumUnderlyingType.U8;
+                    if (underlyingType == typeof(short)) return EnumUnderlyingType.S16;
+                    if (underlyingType == typeof(ushort)) return EnumUnderlyingType.U16;
+                    if (underlyingType == typeof(int)) return EnumUnderlyingType.S32;
+                    if (underlyingType == typeof(uint)) return EnumUnderlyingType.U32;
+                    if (underlyingType == typeof(long)) return EnumUnderlyingType.S64;
+                    if (underlyingType == typeof(ulong)) return EnumUnderlyingType.U64;
                 }
                 
                 return EnumUnderlyingType.Unknown;

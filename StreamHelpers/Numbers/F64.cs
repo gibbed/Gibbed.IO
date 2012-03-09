@@ -39,14 +39,12 @@ namespace Gibbed.IO
         {
             var data = stream.ReadBytes(8);
 
-            if (ShouldSwap(endian))
+            if (ShouldSwap(endian) == true)
             {
                 return BitConverter.Int64BitsToDouble(BitConverter.ToInt64(data, 0).Swap());
             }
-            else
-            {
-                return BitConverter.ToDouble(data, 0);
-            }
+
+            return BitConverter.ToDouble(data, 0);
         }
         #endregion
         #region WriteValueF64
@@ -57,15 +55,9 @@ namespace Gibbed.IO
 
         public static void WriteValueF64(this Stream stream, Double value, Endian endian)
         {
-            byte[] data;
-            if (ShouldSwap(endian))
-            {
-                data = BitConverter.GetBytes(BitConverter.DoubleToInt64Bits(value).Swap());
-            }
-            else
-            {
-                data = BitConverter.GetBytes(value);
-            }
+            byte[] data = ShouldSwap(endian) == true
+                              ? BitConverter.GetBytes(BitConverter.DoubleToInt64Bits(value).Swap())
+                              : BitConverter.GetBytes(value);
             Debug.Assert(data.Length == 8);
             stream.WriteBytes(data);
         }
