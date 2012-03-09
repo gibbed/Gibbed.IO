@@ -33,7 +33,7 @@ namespace Gibbed.IO
             {
                 case Endian.Little: return BitConverter.IsLittleEndian == false;
                 case Endian.Big: return BitConverter.IsLittleEndian == true;
-                default: throw ArgumentException("unsupported endianness", "endian");
+                default: throw new ArgumentException("unsupported endianness", "endian");
             }
         }
 
