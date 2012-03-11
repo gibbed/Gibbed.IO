@@ -58,7 +58,7 @@ namespace Gibbed.IO
 
         public static void WriteValueB32(this Stream stream, bool value, Endian endian)
         {
-            stream.WriteValueU32((byte)(value == true ? 1 : 0));
+            stream.WriteValueU32((byte)(value == true ? 1 : 0), endian);
         }
 
         public static void WriteValueB32(this Stream stream, bool value)
