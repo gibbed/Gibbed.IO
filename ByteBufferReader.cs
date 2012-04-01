@@ -21,6 +21,7 @@
  */
 
 using System;
+using System.Text;
 
 namespace Gibbed.IO
 {
@@ -70,28 +71,28 @@ namespace Gibbed.IO
             }
         }
 
-        public bool ToB8()
+        public bool ReadValueB8()
         {
             return this._Buffer[this._Offset] != 0;
         }
 
-        public bool ToB32()
+        public bool ReadValueB32()
         {
             // no need for swap
             return BitConverter.ToInt32(this._Buffer, this._Offset) != 0;
         }
 
-        public sbyte ToS8()
+        public sbyte ReadValueS8()
         {
             return (sbyte)this._Buffer[this._Offset];
         }
 
-        public byte ToU8()
+        public byte ReadValueU8()
         {
             return this._Buffer[this._Offset];
         }
 
-        public short ToS16()
+        public short ReadValueS16()
         {
             var value = BitConverter.ToInt16(this._Buffer, this._Offset);
 
@@ -103,7 +104,7 @@ namespace Gibbed.IO
             return value;
         }
 
-        public ushort ToU16()
+        public ushort ReadValueU16()
         {
             var value = BitConverter.ToUInt16(this._Buffer, this._Offset);
 
@@ -115,7 +116,7 @@ namespace Gibbed.IO
             return value;
         }
 
-        public int ToS32()
+        public int ReadValueS32()
         {
             var value = BitConverter.ToInt32(this._Buffer, this._Offset);
 
@@ -127,7 +128,7 @@ namespace Gibbed.IO
             return value;
         }
 
-        public uint ToU32()
+        public uint ReadValueU32()
         {
             var value = BitConverter.ToUInt32(this._Buffer, this._Offset);
 
@@ -139,7 +140,7 @@ namespace Gibbed.IO
             return value;
         }
 
-        public long ToS64()
+        public long ReadValueS64()
         {
             var value = BitConverter.ToInt64(this._Buffer, this._Offset);
 
@@ -151,7 +152,7 @@ namespace Gibbed.IO
             return value;
         }
 
-        public ulong ToU64()
+        public ulong ReadValueU64()
         {
             var value = BitConverter.ToUInt64(this._Buffer, this._Offset);
 
@@ -163,7 +164,7 @@ namespace Gibbed.IO
             return value;
         }
 
-        public float ToF32()
+        public float ReadValueF32()
         {
             if (StreamHelpers.ShouldSwap(this._Endian) == true)
             {
@@ -175,7 +176,7 @@ namespace Gibbed.IO
             return BitConverter.ToSingle(this._Buffer, this._Offset);
         }
 
-        public double ToF64()
+        public double ReadValueF64()
         {
             if (StreamHelpers.ShouldSwap(this._Endian) == true)
             {
@@ -183,6 +184,27 @@ namespace Gibbed.IO
             }
 
             return BitConverter.ToDouble(this._Buffer, this._Offset);
+        }
+
+        public string ReadString(int size, bool trailingNull, Encoding encoding)
+        {
+            if (size < 0 || this._Offset + size > this._Buffer.Length)
+            {
+                throw new ArgumentOutOfRangeException("size");
+            }
+
+            string value = encoding.GetString(this._Buffer, this._Offset, size);
+
+            if (trailingNull == true)
+            {
+                var position = value.IndexOf('\0');
+                if (position >= 0)
+                {
+                    value = value.Substring(0, position);
+                }
+            }
+
+            return value;
         }
     }
 }
