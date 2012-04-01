@@ -1,4 +1,4 @@
-﻿/* Copyright (c) 2011 Rick (rick 'at' gibbed 'dot' us)
+﻿/* Copyright (c) 2012 Rick (rick 'at' gibbed 'dot' us)
  * 
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -40,7 +40,7 @@ namespace Gibbed.IO
             var data = stream.ReadBytes(4);
             var value = BitConverter.ToInt32(data, 0);
 
-            if (ShouldSwap(endian))
+            if (ShouldSwap(endian) == true)
             {
                 value = value.Swap();
             }
@@ -48,6 +48,7 @@ namespace Gibbed.IO
             return value;
         }
         #endregion
+
         #region WriteValueS32
         public static void WriteValueS32(this Stream stream, Int32 value)
         {
@@ -56,7 +57,7 @@ namespace Gibbed.IO
 
         public static void WriteValueS32(this Stream stream, Int32 value, Endian endian)
         {
-            if (ShouldSwap(endian))
+            if (ShouldSwap(endian) == true)
             {
                 value = value.Swap();
             }
@@ -66,8 +67,8 @@ namespace Gibbed.IO
             stream.WriteBytes(data);
         }
         #endregion
-        #region Obsolete
 
+        #region Obsolete
         [Obsolete("use Endian enum instead of boolean to represent endianness")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static Int32 ReadValueS32(this Stream stream, bool littleEndian)

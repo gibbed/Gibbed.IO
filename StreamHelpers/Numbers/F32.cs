@@ -1,4 +1,4 @@
-﻿/* Copyright (c) 2011 Rick (rick 'at' gibbed 'dot' us)
+﻿/* Copyright (c) 2012 Rick (rick 'at' gibbed 'dot' us)
  * 
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -47,6 +47,7 @@ namespace Gibbed.IO
             return BitConverter.ToSingle(data, 0);
         }
         #endregion
+
         #region WriteValueF32
         public static void WriteValueF32(this Stream stream, Single value)
         {
@@ -62,6 +63,7 @@ namespace Gibbed.IO
             stream.WriteBytes(data);
         }
         #endregion
+
         #region Obsolete
         [Obsolete("use Endian enum instead of boolean to represent endianness")]
         [EditorBrowsable(EditorBrowsableState.Never)]
