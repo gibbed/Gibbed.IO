@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Gibbed.IO</id>
+        <version>1.0.0</version>
+        <title>Gibbed.IO</title>
+        <authors>Huseyin Uslu</authors>
+        <owners>Rick Gibbed</owners>
+        <licenseUrl>https://github.com/CoiniumServ/Gibbed.IO/blob/2a0de138ddd9efda8d4adc2d5e61f4fb16cc9d49/license.txt</licenseUrl>
+        <projectUrl>https://github.com/CoiniumServ/Gibbed.IO</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Stream helpers library</description>
+        <summary>Stream helpers library</summary>
+        <copyright>Copyright (c) 2012 Rick (rick 'at' gibbed 'dot' us)</copyright>
+        <tags>stream</tags>
+    </metadata>
+    <files>
+        <file src="bin\Release\Gibbed.IO.dll" target="lib\Gibbed.IO.dll" />
+        <file src="bin\Release\Gibbed.IO.pdb" target="lib\Gibbed.IO.pdb" />
+    </files>
+</package>
