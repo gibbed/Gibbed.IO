@@ -70,7 +70,8 @@ namespace Gibbed.IO
             while (left > 0)
             {
                 var block = (int)(Math.Min(left, data.Length));
-                if (input.Read(data, 0, block) != block)
+                var read = input.Read(data, 0, block);
+                if (read != block)
                 {
                     throw new EndOfStreamException();
                 }
