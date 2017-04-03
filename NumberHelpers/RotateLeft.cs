@@ -26,6 +26,16 @@ namespace Gibbed.IO
 {
     public static partial class NumberHelpers
     {
+        public static SByte RotateLeft(this SByte value, int count)
+        {
+            return (SByte)(((Byte)value).RotateLeft(count));
+        }
+
+        public static Byte RotateLeft(this Byte value, int count)
+        {
+            return (Byte)((value << count) | (value >> (8 - count)));
+        }
+
         public static Int16 RotateLeft(this Int16 value, int count)
         {
             return (Int16)(((UInt16)value).RotateLeft(count));
