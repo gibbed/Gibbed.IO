@@ -26,42 +26,22 @@ namespace Gibbed.IO
     {
         public static int Align(this int value, int align)
         {
-            if (value == 0)
-            {
-                return value;
-            }
-
-            return value + ((align - (value % align)) % align);
+            return value == 0 ? 0 : value + value.Padding(align);
         }
 
         public static uint Align(this uint value, uint align)
         {
-            if (value == 0)
-            {
-                return value;
-            }
-
-            return value + ((align - (value % align)) % align);
+            return value == 0 ? 0 : value + value.Padding(align);
         }
 
         public static long Align(this long value, long align)
         {
-            if (value == 0)
-            {
-                return value;
-            }
-
-            return value + ((align - (value % align)) % align);
+            return value == 0 ? 0 : value + value.Padding(align);
         }
 
         public static ulong Align(this ulong value, ulong align)
         {
-            if (value == 0)
-            {
-                return value;
-            }
-
-            return value + ((align - (value % align)) % align);
+            return value == 0 ? 0 : value + value.Padding(align);
         }
     }
 }
