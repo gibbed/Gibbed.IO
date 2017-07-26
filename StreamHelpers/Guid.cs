@@ -28,13 +28,12 @@ namespace Gibbed.IO
 {
     public static partial class StreamHelpers
     {
-        #region ReadValueGuid
         public static Guid ReadValueGuid(this Stream stream, Endian endian)
         {
             var a = stream.ReadValueS32(endian);
             var b = stream.ReadValueS16(endian);
             var c = stream.ReadValueS16(endian);
-            var d = stream.ReadBytes(8);
+            var d = SmallWorkBuffer.ReadBytes(stream, 8);
             return new Guid(a, b, c, d);
         }
 
@@ -42,9 +41,7 @@ namespace Gibbed.IO
         {
             return stream.ReadValueGuid(Endian.Little);
         }
-        #endregion
 
-        #region WriteValueGuid
         public static void WriteValueGuid(this Stream stream, Guid value, Endian endian)
         {
             var data = value.ToByteArray();
@@ -59,6 +56,5 @@ namespace Gibbed.IO
         {
             stream.WriteValueGuid(value, Endian.Little);
         }
-        #endregion
     }
 }

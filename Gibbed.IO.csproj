@@ -50,20 +50,15 @@
     <Compile Include="StreamHelpers\Boolean.cs" />
     <Compile Include="StreamHelpers\Enum.cs" />
     <Compile Include="StreamHelpers\Guid.cs" />
-    <Compile Include="StreamHelpers\Numbers\F32.cs" />
-    <Compile Include="StreamHelpers\Numbers\F64.cs" />
-    <Compile Include="StreamHelpers\Numbers\S16.cs" />
-    <Compile Include="StreamHelpers\Numbers\S32.cs" />
-    <Compile Include="StreamHelpers\Numbers\S64.cs" />
-    <Compile Include="StreamHelpers\Numbers\S08.cs" />
-    <Compile Include="StreamHelpers\Numbers\U08.cs" />
-    <Compile Include="StreamHelpers\Numbers\U16.cs" />
-    <Compile Include="StreamHelpers\Numbers\U32.cs" />
-    <Compile Include="StreamHelpers\Numbers\U64.cs" />
+    <Compile Include="StreamHelpers\NumberFloating.cs" />
+    <Compile Include="StreamHelpers\NumberUnsigned.cs" />
+    <Compile Include="StreamHelpers\NumberSigned.cs" />
     <Compile Include="StreamHelpers\Strings\Default.cs" />
     <Compile Include="StreamHelpers\Strings\Internal.cs" />
     <Compile Include="StreamHelpers\Strings\Supplied.cs" />
     <Compile Include="StreamHelpers\Structure.cs" />
+    <Compile Include="SmallWorkBuffer.cs" />
+    <Compile Include="Overlap.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

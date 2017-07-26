@@ -37,30 +37,15 @@ namespace Gibbed.IO
             }
         }
 
-        public static MemoryStream ReadToMemoryStream(this Stream stream, long size, int buffer)
+        public static MemoryStream ReadToMemoryStream(this Stream stream, int size, bool writeable)
         {
-            var memory = new MemoryStream();
-
-            long left = size;
-            var data = new byte[buffer];
-            while (left > 0)
-            {
-                var block = (int)(Math.Min(left, data.Length));
-                if (stream.Read(data, 0, block) != block)
-                {
-                    throw new EndOfStreamException();
-                }
-                memory.Write(data, 0, block);
-                left -= block;
-            }
-
-            memory.Seek(0, SeekOrigin.Begin);
-            return memory;
+            var bytes = stream.ReadBytes(size);
+            return new MemoryStream(bytes, writeable);
         }
 
-        public static MemoryStream ReadToMemoryStream(this Stream stream, long size)
+        public static MemoryStream ReadToMemoryStream(this Stream stream, int size)
         {
-            return stream.ReadToMemoryStream(size, 0x40000);
+            return stream.ReadToMemoryStream(size, true);
         }
 
         public static void WriteFromStream(this Stream stream, Stream input, long size, int buffer)
@@ -69,7 +54,7 @@ namespace Gibbed.IO
             var data = new byte[buffer];
             while (left > 0)
             {
-                var block = (int)(Math.Min(left, data.Length));
+                var block = (int)Math.Min(left, buffer);
                 var read = input.Read(data, 0, block);
                 if (read != block)
                 {
@@ -98,13 +83,7 @@ namespace Gibbed.IO
             {
                 throw new EndOfStreamException();
             }
-
             return data;
-        }
-
-        public static byte[] ReadBytes(this Stream stream, uint length)
-        {
-            return stream.ReadBytes((int)length);
         }
 
         public static void WriteBytes(this Stream stream, byte[] data)
