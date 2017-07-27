@@ -25,36 +25,36 @@ using System.Runtime.InteropServices;
 namespace Gibbed.IO
 {
     [StructLayout(LayoutKind.Explicit)]
-    internal struct Overlap<TA, TB>
+    internal struct OverlapDouble
     {
         [FieldOffset(0)]
-        private TA A;
+        private double D;
 
         [FieldOffset(0)]
-        private TB B;
+        private ulong U;
 
-        public Overlap(TA a)
+        public OverlapDouble(double d)
         {
-            this.B = default(TB);
-            this.A = a;
+            this.U = default(ulong);
+            this.D = d;
         }
 
-        public Overlap(TB b)
+        public OverlapDouble(ulong u)
         {
-            this.A = default(TA);
-            this.B = b;
+            this.D = default(double);
+            this.U = u;
         }
 
-        public TA AsA
+        public double AsD
         {
-            get { return this.A; }
-            set { this.A = value; }
+            get { return this.D; }
+            set { this.D = value; }
         }
 
-        public TB AsB
+        public ulong AsU
         {
-            get { return this.B; }
-            set { this.B = value; }
+            get { return this.U; }
+            set { this.U = value; }
         }
     }
 }

@@ -67,16 +67,16 @@ namespace Gibbed.IO
 
         public static float Swap(this float value)
         {
-            var overlap = new Overlap<float, uint>(value);
-            overlap.AsB = overlap.AsB.Swap();
-            return overlap.AsA;
+            var overlap = new OverlapSingle(value);
+            overlap.AsU = overlap.AsU.Swap();
+            return overlap.AsF;
         }
 
         public static double Swap(this double value)
         {
-            var overlap = new Overlap<double, ulong>(value);
-            overlap.AsB = overlap.AsB.Swap();
-            return overlap.AsA;
+            var overlap = new OverlapDouble(value);
+            overlap.AsU = overlap.AsU.Swap();
+            return overlap.AsD;
         }
     }
 }

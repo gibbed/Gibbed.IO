@@ -43,6 +43,7 @@
     <Compile Include="NumberHelpers\RotateLeft.cs" />
     <Compile Include="NumberHelpers\RotateRight.cs" />
     <Compile Include="NumberHelpers\Swap.cs" />
+    <Compile Include="OverlapDouble.cs" />
     <Compile Include="PathHelper.cs" />
     <Compile Include="StreamHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,7 +59,7 @@
     <Compile Include="StreamHelpers\Strings\Supplied.cs" />
     <Compile Include="StreamHelpers\Structure.cs" />
     <Compile Include="SmallWorkBuffer.cs" />
-    <Compile Include="Overlap.cs" />
+    <Compile Include="OverlapSingle.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
