@@ -30,10 +30,6 @@ namespace Gibbed.IO
         public static float ReadValueF32(this Stream stream, Endian endian)
         {
             var value = stream.ReadValueU32(endian);
-            if (ShouldSwap(endian) == true)
-            {
-                value = value.Swap();
-            }
             return new OverlapSingle(value).AsF;
         }
 
@@ -45,10 +41,6 @@ namespace Gibbed.IO
         public static void WriteValueF32(this Stream stream, float value, Endian endian)
         {
             var rawValue = new OverlapSingle(value).AsU;
-            if (ShouldSwap(endian) == true)
-            {
-                rawValue = rawValue.Swap();
-            }
             stream.WriteValueU32(rawValue, endian);
         }
 
@@ -61,10 +53,6 @@ namespace Gibbed.IO
         public static double ReadValueF64(this Stream stream, Endian endian)
         {
             var value = stream.ReadValueU64(endian);
-            if (ShouldSwap(endian) == true)
-            {
-                value = value.Swap();
-            }
             return new OverlapDouble(value).AsD;
         }
 
@@ -76,10 +64,6 @@ namespace Gibbed.IO
         public static void WriteValueF64(this Stream stream, double value, Endian endian)
         {
             var rawValue = new OverlapDouble(value).AsU;
-            if (ShouldSwap(endian) == true)
-            {
-                rawValue = rawValue.Swap();
-            }
             stream.WriteValueU64(rawValue, endian);
         }
 
