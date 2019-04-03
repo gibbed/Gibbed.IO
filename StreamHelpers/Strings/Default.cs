@@ -29,12 +29,12 @@ namespace Gibbed.IO
     {
         public static Encoding DefaultEncoding = Encoding.ASCII;
 
-        public static string ReadString(this Stream stream, uint size)
+        public static string ReadString(this Stream stream, int size)
         {
             return stream.ReadStringInternalStatic(DefaultEncoding, size, false);
         }
 
-        public static string ReadString(this Stream stream, uint size, bool trailingNull)
+        public static string ReadString(this Stream stream, int size, bool trailingNull)
         {
             return stream.ReadStringInternalStatic(DefaultEncoding, size, trailingNull);
         }
@@ -49,7 +49,7 @@ namespace Gibbed.IO
             stream.WriteStringInternalStatic(DefaultEncoding, value);
         }
 
-        public static void WriteString(this Stream stream, string value, uint size)
+        public static void WriteString(this Stream stream, string value, int size)
         {
             stream.WriteStringInternalStatic(DefaultEncoding, value, size);
         }

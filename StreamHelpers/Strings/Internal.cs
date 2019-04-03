@@ -30,14 +30,13 @@ namespace Gibbed.IO
 {
     public static partial class StreamHelpers
     {
-        internal static string ReadStringInternalStatic(this Stream stream,
-                                                        Encoding encoding,
-                                                        uint size,
-                                                        bool trailingNull)
+        internal static string ReadStringInternalStatic(
+            this Stream stream,
+            Encoding encoding,
+            int size,
+            bool trailingNull)
         {
-            var data = new byte[size];
-            stream.Read(data, 0, data.Length);
-
+            var data = stream.ReadBytes(size);
             string value = encoding.GetString(data, 0, data.Length);
 
             if (trailingNull == true)
@@ -54,15 +53,15 @@ namespace Gibbed.IO
 
         internal static void WriteStringInternalStatic(this Stream stream, Encoding encoding, string value)
         {
-            byte[] data = encoding.GetBytes(value);
+            var data = encoding.GetBytes(value);
             stream.Write(data, 0, data.Length);
         }
 
-        internal static void WriteStringInternalStatic(this Stream stream, Encoding encoding, string value, uint size)
+        internal static void WriteStringInternalStatic(this Stream stream, Encoding encoding, string value, int size)
         {
-            byte[] data = encoding.GetBytes(value);
-            Array.Resize(ref data, (int)size);
-            stream.Write(data, 0, (int)size);
+            var data = encoding.GetBytes(value);
+            Array.Resize(ref data, size);
+            stream.Write(data, 0, size);
         }
 
         internal static string ReadStringInternalDynamic(this Stream stream, Encoding encoding, char end)
@@ -102,7 +101,7 @@ namespace Gibbed.IO
 
         internal static void WriteStringInternalDynamic(this Stream stream, Encoding encoding, string value, char end)
         {
-            byte[] data = encoding.GetBytes(value);
+            var data = encoding.GetBytes(value);
             stream.Write(data, 0, data.Length);
 
             data = encoding.GetBytes(end.ToString(CultureInfo.InvariantCulture));
