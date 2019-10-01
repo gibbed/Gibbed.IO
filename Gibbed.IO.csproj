@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45;net40</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net40;net45;net472;net48</TargetFrameworks>
     <Company>Gibbed</Company>
     <Authors>Gibbed</Authors>
     <Description>http://gib.me/</Description>
