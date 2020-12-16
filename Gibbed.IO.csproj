@@ -1,11 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net40;net45;net472;net48</TargetFrameworks>
     <Company>Gibbed</Company>
     <Authors>Gibbed</Authors>
     <Description>http://gib.me/</Description>
     <Copyright>Copyright © Gibbed 2017</Copyright>
     <AssemblyVersion>1.2.0.0</AssemblyVersion>
     <FileVersion>1.2.0.0</FileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(GibbedIO_TargetFrameworksToBuild)' == '' ">
+    <GibbedIO_TargetFrameworksToBuild>$(TargetFrameworksToBuild)</GibbedIO_TargetFrameworksToBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(GibbedIO_TargetFrameworksToBuild)' == '' ">
+    <TargetFrameworks>netstandard2.0;net40;net45;net472;net48</TargetFrameworks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(GibbedIO_TargetFrameworksToBuild)' != '' ">
+    <TargetFrameworks>$(GibbedIO_TargetFrameworksToBuild)</TargetFrameworks>
   </PropertyGroup>
 </Project>
