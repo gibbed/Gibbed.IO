@@ -1,5 +1,5 @@
 <Project>
   <PropertyGroup>
-    <GibbedIO_TargetFrameworksToBuild>net5.0</GibbedIO_TargetFrameworksToBuild>                   
+    <GibbedIO_TargetFrameworksToBuild>net5.0</GibbedIO_TargetFrameworksToBuild>
   </PropertyGroup>
 </Project>
