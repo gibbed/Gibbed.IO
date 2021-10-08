@@ -16,4 +16,7 @@
   <PropertyGroup Condition=" '$(GibbedIO_TargetFrameworksToBuild)' != '' ">
     <TargetFrameworks>$(GibbedIO_TargetFrameworksToBuild)</TargetFrameworks>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove=".git*" />
+  </ItemGroup>
 </Project>
